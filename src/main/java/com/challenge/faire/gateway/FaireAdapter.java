@@ -6,6 +6,7 @@ import com.challenge.faire.model.OrderPage;
 import com.challenge.faire.model.ProductPage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.*;
+import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class FaireAdapter {
 
     private Faire connect(final String url) {
         return Feign.builder()
+                .client(new ApacheHttpClient())
                 .decoder(new JacksonDecoder(objectMapper))
                 .encoder(new JacksonEncoder(objectMapper))
                 .logger(new Logger.ErrorLogger())
