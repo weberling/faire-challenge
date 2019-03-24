@@ -5,12 +5,8 @@ import com.challenge.faire.model.InventoryRequest;
 import com.challenge.faire.service.InventoryService;
 import com.challenge.faire.service.OrderService;
 import com.challenge.faire.service.ProductService;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +14,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,20 +36,16 @@ public class SolutionTest {
     public static final String CONTENT_TYPE = "Content-type";
     public static final String X_FAIRE_ACCESS_TOKEN = "X-FAIRE-ACCESS-TOKEN";
     public static final StringValuePattern FAIRE_TOKEN = equalTo("ANY");
-    @Autowired
-    private Solution solution;
-
-    @SpyBean
-    private ProductService productService;
-
-    @SpyBean
-    private OrderService orderService;
-
-    @SpyBean
-    private InventoryService inventoryService;
-
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(9090);
+    @Autowired
+    private Solution solution;
+    @SpyBean
+    private ProductService productService;
+    @SpyBean
+    private OrderService orderService;
+    @SpyBean
+    private InventoryService inventoryService;
 
     @Test
     public void defaultTest() {
@@ -190,7 +180,7 @@ public class SolutionTest {
                 .getAllProductsByBrand(Mockito.eq("b_d2481b88"));
         Mockito.verify(orderService, Mockito.times(1))
                 .acceptOrder(Mockito.eq("bo_3s7ei5an"));
-        Map<String, BackOrderItem> backOrderItemMap = new HashMap(){{
+        Map<String, BackOrderItem> backOrderItemMap = new HashMap() {{
             put("oi_ce3i14rx", new BackOrderItem(2));
         }};
         Mockito.verify(orderService, Mockito.times(1))
