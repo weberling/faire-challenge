@@ -1,6 +1,6 @@
 package com.challenge.faire.service;
 
-import com.challenge.faire.gateway.FaireAdapter;
+import com.challenge.faire.gateway.FaireGateway;
 import com.challenge.faire.model.Product;
 import com.challenge.faire.model.ProductPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private FaireAdapter faireAdapter;
+    private FaireGateway faireGateway;
 
     public List<Product> getAllProductsByBrand(final String brandId) {
 
@@ -27,7 +27,7 @@ public class ProductService {
 
         while (paging) {
 
-            ProductPage productPage = faireAdapter.listProduct(page, brandId);
+            ProductPage productPage = faireGateway.listProduct(page, brandId);
 
             if (CollectionUtils.isEmpty(productPage.getProducts())) {
                 paging = false;

@@ -1,6 +1,6 @@
 package com.challenge.faire.service;
 
-import com.challenge.faire.gateway.FaireAdapter;
+import com.challenge.faire.gateway.FaireGateway;
 import com.challenge.faire.model.BackOrderItem;
 import com.challenge.faire.model.Order;
 import com.challenge.faire.model.OrderPage;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class OrderService {
 
     @Autowired
-    private FaireAdapter faireAdapter;
+    private FaireGateway faireGateway;
 
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
@@ -28,7 +28,7 @@ public class OrderService {
 
         while (paging) {
 
-            OrderPage orderPage = faireAdapter.listOrder(page);
+            OrderPage orderPage = faireGateway.listOrder(page);
 
             if (CollectionUtils.isEmpty(orderPage.getOrders())) {
                 paging = false;
@@ -43,10 +43,10 @@ public class OrderService {
     }
 
     public void backOrderItem(String orderId, Map<String, BackOrderItem> backOrderItemMap) {
-        faireAdapter.backOrderItem(orderId, backOrderItemMap);
+        faireGateway.backOrderItem(orderId, backOrderItemMap);
     }
 
     public void acceptOrder(String orderId) {
-        faireAdapter.acceptOrder(orderId);
+        faireGateway.acceptOrder(orderId);
     }
 }
