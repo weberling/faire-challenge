@@ -1,7 +1,6 @@
 package com.challenge.faire.statistics;
 
 import com.challenge.faire.model.Order;
-import lombok.Getter;
 
 /**
  * Created by weberling on 23/03/19.
@@ -10,11 +9,10 @@ import lombok.Getter;
 public class Statistics {
 
 
-    @Getter
     private MostAmountDollarOrder mostAmountDollarOrder = new MostAmountDollarOrder();
-    @Getter
+
     private StateMostOrder stateMostOrder = new StateMostOrder();
-    @Getter
+
     private BestSellingProduct bestSellingProductOption = new BestSellingProduct();
 
     public void addOrder(Order order) {
@@ -22,6 +20,22 @@ public class Statistics {
         mostAmountDollarOrder.addOrder(order, amount);
         stateMostOrder.addOrder(order, amount);
         bestSellingProductOption.addOrder(order);
+    }
+
+    public void print() {
+        System.out.println(String.format("best selling product option id: %s, quantity: $d",
+                bestSellingProductOption.getProductOptionIdMost(), bestSellingProductOption.getProductOptionIdMostQuantity()));
+        System.out.println(String.format("largest order by dollar ammount id: %s, amount: $d",
+                mostAmountDollarOrder.getMostOrderAmmountDolllar(), mostAmountDollarOrder.getMostAmmountDolllar()));
+        System.out.println(String.format("the state with the most orders is state: %s, quantity: $d",
+                stateMostOrder.getStateMostOrder(), stateMostOrder.getStateMostOrderQuantity()));
+
+
+        System.out.println(String.format("best selling sku: %s, quantity: $d",
+                bestSellingProductOption.getSkuMost(), bestSellingProductOption.getSkuMostQuantity()));
+        System.out.println(String.format("the state with the most orders dollar amount is state: %s, amount: $d",
+                stateMostOrder.getStateMostDollar(), stateMostOrder.getStateMostDollarAmount()));
+
     }
 
 

@@ -7,13 +7,13 @@ import com.challenge.faire.service.ProductService;
 import com.challenge.faire.statistics.Statistics;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -37,11 +37,15 @@ public class Solution {
                 .collect(Collectors.toMap(productOption -> productOption.getId(), productOption -> productOption));*/
 
 
-        Map<String, ProductOptionQuantity> quantityByProductOption = productService.getAllProductsByBrand(BRAND_ID).stream()
+        Map<String, Integer> skuQuantity = productService.getAllProductsByBrand(BRAND_ID).stream()
                 .filter(Product::getActive)
                 .flatMap(product -> product.getOptions().stream())
                 .filter(ProductOption::getActive)
-                .collect(Collectors.toMap(productOption -> productOption.getId(), productOption -> getAvailableQuantity(productOption)));
+                .filter(productOption -> productOption.getAvailableQuantity() != null)
+                .filter(productOption -> productOption.getAvailableQuantity() >= 0)
+                .filter(productOption -> StringUtils.isNotBlank(productOption.getSku()))
+                .collect(Collectors.toMap(productOption -> productOption.getSku(), productOption -> productOption.getAvailableQuantity()));
+
 
         List<Order> orders = orderService.getAllOrders();
 
@@ -58,12 +62,12 @@ public class Solution {
 
                 order.getItems().stream().forEach(orderItem -> {
 
-                    int quantityAvailable = getProductQuantity(orderItem, quantityByProductOption).getQuantity();
+                    int quantityAvailable = getProductQuantity(orderItem.getSku(), skuQuantity);
 
                     // there is inventory to fulfill the order so decrement inventory
                     if (quantityAvailable != 0 && quantityAvailable >= orderItem.getQuantity().intValue()) {
                         //TODO dont forget to test this
-                        quantityByProductOption.get(orderItem.getProductOptionId()).accumulate(orderItem.getQuantity());
+                        skuQuantity.put(orderItem.getSku(), quantityAvailable - orderItem.getQuantity());
 
                     } else {
                         backOrderItems.put(orderItem.getId(), new BackOrderItem(orderItem.getQuantity()));
@@ -83,53 +87,20 @@ public class Solution {
             }
         });
 
-        inventoryService.update(getInventoryRequest(quantityByProductOption));
-
-
-        // requireds
-        // best selling product option by id
-        // largest order by dollar ammount
-        // the state with the most orders
-
-
-        // best selling sku
-        // the state with the most ammount dollar
-        // the state with the most quantity unit
-        System.out.println(String.format("best selling product option id: %s, quantity: $d",
-                statistics.getBestSellingProductOption().getProductOptionIdMost(), statistics.getBestSellingProductOption().getProductOptionIdMostQuantity()));
-        System.out.println(String.format("largest order by dollar ammount id: %s, amount: $d",
-                statistics.getMostAmountDollarOrder().getMostOrderAmmountDolllar(), statistics.getMostAmountDollarOrder().getMostAmmountDolllar()));
-        System.out.println(String.format("the state with the most orders is state: %s, quantity: $d",
-                statistics.getStateMostOrder().getStateMostOrder(), statistics.getStateMostOrder().getStateMostOrderQuantity()));
-
-
-        System.out.println(String.format("best selling sku: %s, quantity: $d",
-                statistics.getBestSellingProductOption().getSkuMost(), statistics.getBestSellingProductOption().getSkuMostQuantity()));
-        System.out.println(String.format("the state with the most orders dollar amount is state: %s, amount: $d",
-                statistics.getStateMostOrder().getStateMostDollar(), statistics.getStateMostOrder().getStateMostDollarAmount()));
+        statistics.print();
+        inventoryService.update(getInventoryRequest(skuQuantity));
 
     }
 
-    private InventoryRequest getInventoryRequest(Map<String, ProductOptionQuantity> quantityByProductOption) {
-        Map<String, ProductOptionQuantity> sku quantityByProductOption.values().stream().collect(
-                Collectors.groupingBy(
-                        ProductOptionQuantity::getSku,
-                        Collectors.reducing((optionA, optionB) ->
-                                new ProductOptionQuantity(optionA.getSku(), optionA.getQuantity() + optionB.getQuantity()))
-                )
-        );
+    private InventoryRequest getInventoryRequest(Map<String, Integer> quantityBySku) {
         return new InventoryRequest(quantityBySku.entrySet().stream()
-                .map(entry -> new Inventory(entry.getKey(), entry.getValue().get()))
+                .map(entry -> new Inventory(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
     }
 
-    private ProductOptionQuantity getProductQuantity(OrderItem orderItem, Map<String, ProductOptionQuantity> productOptionQuantity) {
-        String key = orderItem.getProductOptionId();
-        ProductOptionQuantity availableQuantity = productOptionQuantity.get(key);
-        if (availableQuantity == null) {
-            return new ProductOptionQuantity(orderItem.getSku(), 0);
-        }
-        return availableQuantity;
+    private Integer getProductQuantity(String sku,  Map<String, Integer> skuQuantity) {
+        Integer availableQuantity = skuQuantity.get(sku);
+        return availableQuantity != null ? availableQuantity : 0;
     }
 
     private ProductOptionQuantity getAvailableQuantity(ProductOption productOption) {
@@ -142,6 +113,7 @@ public class Solution {
     }
 
     @Data
+    @EqualsAndHashCode
     @AllArgsConstructor
     public class ProductOptionQuantity {
         private String sku;
