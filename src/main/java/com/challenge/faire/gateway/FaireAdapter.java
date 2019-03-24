@@ -66,6 +66,10 @@ public class FaireAdapter {
         @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         ProductPage listProduct(@Param("page") Integer page, @Param("brand_id") String brandId, @Param("access_token") String accessToken);
 
+        @RequestLine("GET /products?page={page}&brand_id={brand_id}")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
+        Object test(@Param("page") Integer page, @Param("brand_id") String brandId, @Param("access_token") String accessToken);
+
         @RequestLine("GET /orders?page={page}")
         @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         OrderPage listOrderByState(@Param("page") Integer page, @Param("access_token") String accessToken);
