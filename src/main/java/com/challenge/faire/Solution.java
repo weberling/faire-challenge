@@ -31,9 +31,9 @@ public class Solution {
 
 
     // DOUBTS
-    // I DIDNT UNDERSTAND VERY WELL WHAT IS SKU
+    // SAME SKU FOR DIFFERENTS PRODUCTS?
     // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
-    // IF THE MOST ANYTHING HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
+    // IF THE MOST ANYTHING* HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
     public void execute() {
 
         List<Product> products = productService.getAllProductsByBrand(BRAND_ID);
