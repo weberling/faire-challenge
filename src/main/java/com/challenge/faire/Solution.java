@@ -30,7 +30,7 @@ public class Solution {
     private InventoryService inventoryService;
 
 
-    //DOUBTS
+    // DOUBTS
     // I DIDNT UNDERSTAND VERY WELL WHAT IS SKU
     // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
     // IF THE MOST ANYTHING HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
@@ -69,6 +69,7 @@ public class Solution {
                     if (quantityAvailable != 0 && quantityAvailable >= orderItem.getQuantity().intValue()) {
                         skuQuantity.put(orderItem.getSku(), quantityAvailable - orderItem.getQuantity());
 
+                    // item has no enough inventory
                     } else {
                         backOrderItems.put(orderItem.getId(), new BackOrderItem(orderItem.getQuantity()));
                     }
