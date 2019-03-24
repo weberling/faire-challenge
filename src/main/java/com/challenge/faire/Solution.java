@@ -39,14 +39,7 @@ public class Solution {
 
         List<Product> products = productService.getAllProductsByBrand(BRAND_ID);
 
-        Map<String, Integer> skuQuantity = products.stream()
-                .filter(Product::getActive)
-                .flatMap(product -> product.getOptions().stream())
-                .filter(ProductOption::getActive)
-                .filter(productOption -> productOption.getAvailableQuantity() != null)
-                .filter(productOption -> productOption.getAvailableQuantity() >= 0)
-                .filter(productOption -> StringUtils.isNotBlank(productOption.getSku()))
-                .collect(Collectors.toMap(productOption -> productOption.getSku(), productOption -> productOption.getAvailableQuantity()));
+        Map<String, Integer> skuQuantity = mapActiveProductOptionsAvailableBySku(products);
 
 
         List<Order> orders = orderService.getAllOrders();
@@ -92,6 +85,17 @@ public class Solution {
         statistics.print();
         inventoryService.update(getInventoryRequest(skuQuantity));
 
+    }
+
+    private Map<String, Integer> mapActiveProductOptionsAvailableBySku(List<Product> products) {
+        return products.stream()
+                .filter(Product::getActive)
+                .flatMap(product -> product.getOptions().stream())
+                .filter(ProductOption::getActive)
+                .filter(productOption -> productOption.getAvailableQuantity() != null)
+                .filter(productOption -> productOption.getAvailableQuantity() >= 0)
+                .filter(productOption -> StringUtils.isNotBlank(productOption.getSku()))
+                .collect(Collectors.toMap(productOption -> productOption.getSku(), productOption -> productOption.getAvailableQuantity()));
     }
 
     private InventoryRequest getInventoryRequest(Map<String, Integer> quantityBySku) {
