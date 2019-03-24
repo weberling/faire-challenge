@@ -23,17 +23,17 @@ public class Statistics {
     }
 
     public void print() {
-        System.out.println(String.format("best selling product option id: %s, quantity: $d",
+        System.out.println(String.format("best selling product option id: %s, quantity: %d",
                 bestSellingProductOption.getProductOptionIdMost(), bestSellingProductOption.getProductOptionIdMostQuantity()));
-        System.out.println(String.format("largest order by dollar ammount id: %s, amount: $d",
+        System.out.println(String.format("largest order by dollar ammount id: %s, amount: %d",
                 mostAmountDollarOrder.getMostOrderAmmountDolllar(), mostAmountDollarOrder.getMostAmmountDolllar()));
-        System.out.println(String.format("the state with the most orders is state: %s, quantity: $d",
+        System.out.println(String.format("the state with the most orders is state: %s, quantity: %d",
                 stateMostOrder.getStateMostOrder(), stateMostOrder.getStateMostOrderQuantity()));
 
 
-        System.out.println(String.format("best selling sku: %s, quantity: $d",
+        System.out.println(String.format("best selling sku: %s, quantity: %d",
                 bestSellingProductOption.getSkuMost(), bestSellingProductOption.getSkuMostQuantity()));
-        System.out.println(String.format("the state with the most orders dollar amount is state: %s, amount: $d",
+        System.out.println(String.format("the state with the most orders dollar amount is state: %s, amount: %d",
                 stateMostOrder.getStateMostDollar(), stateMostOrder.getStateMostDollarAmount()));
 
     }

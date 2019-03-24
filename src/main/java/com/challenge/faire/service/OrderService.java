@@ -4,9 +4,9 @@ import com.challenge.faire.gateway.FaireAdapter;
 import com.challenge.faire.model.BackOrderItem;
 import com.challenge.faire.model.Order;
 import com.challenge.faire.model.OrderPage;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +21,19 @@ public class OrderService {
     @Autowired
     private FaireAdapter faireAdapter;
 
-    public List<Order> getAllOrders(){
+    public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
         int page = 1;
         boolean paging = true;
 
-        while (paging){
+        while (paging) {
 
             OrderPage orderPage = faireAdapter.listOrder(page);
 
-            if(CollectionUtils.isEmpty(orderPage.getOrders())){
+            if (CollectionUtils.isEmpty(orderPage.getOrders())) {
                 paging = false;
 
-            } else{
+            } else {
                 orders.addAll(orderPage.getOrders());
                 page++;
             }
@@ -42,11 +42,11 @@ public class OrderService {
         return orders;
     }
 
-    public void backOrderItem(String orderId, Map<String, BackOrderItem> backOrderItemMap){
+    public void backOrderItem(String orderId, Map<String, BackOrderItem> backOrderItemMap) {
         faireAdapter.backOrderItem(orderId, backOrderItemMap);
     }
 
-    public void acceptOrder(String orderId){
+    public void acceptOrder(String orderId) {
         faireAdapter.acceptOrder(orderId);
     }
 }

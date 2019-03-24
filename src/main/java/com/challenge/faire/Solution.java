@@ -8,13 +8,14 @@ import com.challenge.faire.statistics.Statistics;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -32,10 +33,6 @@ public class Solution {
     private InventoryService inventoryService;
 
     public void execute() {
-        /*Map<String, ProductOption> quantityBySku = productService.getAllProductsByBrand(BRAND_ID).stream()
-                .flatMap(product -> product.getOptions().stream())
-                .collect(Collectors.toMap(productOption -> productOption.getId(), productOption -> productOption));*/
-
 
         Map<String, Integer> skuQuantity = productService.getAllProductsByBrand(BRAND_ID).stream()
                 .filter(Product::getActive)
@@ -98,30 +95,9 @@ public class Solution {
                 .collect(Collectors.toList()));
     }
 
-    private Integer getProductQuantity(String sku,  Map<String, Integer> skuQuantity) {
+    private Integer getProductQuantity(String sku, Map<String, Integer> skuQuantity) {
         Integer availableQuantity = skuQuantity.get(sku);
         return availableQuantity != null ? availableQuantity : 0;
-    }
-
-    private ProductOptionQuantity getAvailableQuantity(ProductOption productOption) {
-        Integer availableQuantity = productOption.getAvailableQuantity();
-        if (availableQuantity == null) {
-            return new ProductOptionQuantity(productOption.getSku(), 0);
-        }
-
-        return new ProductOptionQuantity(productOption.getSku(), 0);
-    }
-
-    @Data
-    @EqualsAndHashCode
-    @AllArgsConstructor
-    public class ProductOptionQuantity {
-        private String sku;
-        private Integer quantity = 0;
-
-        public void accumulate(Integer quantity) {
-            this.quantity += quantity;
-        }
     }
 
 }

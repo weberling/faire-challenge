@@ -62,24 +62,24 @@ public class FaireAdapter {
 
 
     interface Faire {
-        @RequestLine("GET /api/v1/products?page={page}&brand_id={brand_id}")
-        @Headers("X-FAIRE-ACCESS-TOKEN: {access_token}")
+        @RequestLine("GET /products?page={page}&brand_id={brand_id}")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         ProductPage listProduct(@Param("page") Integer page, @Param("brand_id") String brandId, @Param("access_token") String accessToken);
 
-        @RequestLine("GET /api/v1/orders?page={page}")
-        @Headers("X-FAIRE-ACCESS-TOKEN: {access_token}")
+        @RequestLine("GET /orders?page={page}")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         OrderPage listOrderByState(@Param("page") Integer page, @Param("access_token") String accessToken);
 
-        @RequestLine("PATCH /api/v1/products/options/inventory-levels")
-        @Headers("X-FAIRE-ACCESS-TOKEN: {access_token}")
+        @RequestLine("PATCH /products/options/inventory-levels")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         void updateInventory(@Param("access_token") String accessToken, InventoryRequest inventoryRequest);
 
-        @RequestLine("PUT /api/v1/orders/{orderId}/processing")
-        @Headers("X-FAIRE-ACCESS-TOKEN: {access_token}")
+        @RequestLine("PUT /orders/{orderId}/processing")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         void acceptOrder(@Param("orderId") String orderId, @Param("access_token") String accessToken);
 
-        @RequestLine("POST /api/v1/orders/{orderId}/items/availability")
-        @Headers("X-FAIRE-ACCESS-TOKEN: {access_token}")
+        @RequestLine("POST /orders/{orderId}/items/availability")
+        @Headers({"X-FAIRE-ACCESS-TOKEN: {access_token}", "Content-Type: application/json"})
         void backOrderItem(@Param("orderId") String orderId, @Param("access_token") String accessToken, Map<String, BackOrderItem> backOrderItemMap);
     }
 }

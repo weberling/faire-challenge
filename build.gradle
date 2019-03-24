@@ -1,17 +1,21 @@
 buildscript {
+	ext {
+		springBootVersion = '1.5.19.RELEASE'
+	}
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
-		classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.19.RELEASE'
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
-plugins {
-	id 'java'
-}
-
+apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'maven'
 
 group = 'com.challenge'
 version = '0.0.1-SNAPSHOT'
@@ -21,20 +25,16 @@ repositories {
 	mavenCentral()
 }
 
-ext {
-	set('springCloudVersion', 'Edgware.SR5')
-}
 
 dependencies {
-	compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	compile "io.github.openfeign:feign-httpclient:10.2.0"
 	compile "io.github.openfeign:feign-jackson:9.0.0"
+	compile 'org.springframework.retry:spring-retry'
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile 'org.springframework:spring-web'
+
+	compile 'org.apache.commons:commons-lang3:3.4'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+	testCompile "com.github.tomakehurst:wiremock-jre8:2.22.0"
 }
