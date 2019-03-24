@@ -164,7 +164,7 @@ public class SolutionTest {
                 .withHeader(CONTENT_TYPE, CONTENT_TYPE_PATTERN)
                 .withHeader(X_FAIRE_ACCESS_TOKEN, FAIRE_TOKEN)
                 .willReturn(aResponse()
-                        .withStatus(200)
+                        .withStatus(201)
                         .withHeader(CONTENT_TYPE, CONTENT_TYPE_VALUE)));
 
         stubFor(patch(urlPathEqualTo("/products/options/inventory-levels"))

@@ -34,6 +34,7 @@ public class Solution {
     // SAME SKU FOR DIFFERENTS PRODUCTS?
     // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
     // IF THE MOST ANYTHING* HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
+    // WHAT IS unit_multiplier
     public void execute() {
 
         List<Product> products = productService.getAllProductsByBrand(BRAND_ID);
