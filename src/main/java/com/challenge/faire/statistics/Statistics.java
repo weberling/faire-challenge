@@ -9,11 +9,11 @@ import com.challenge.faire.model.Order;
 public class Statistics {
 
 
-    private MostAmountDollarOrder mostAmountDollarOrder = new MostAmountDollarOrder();
+    MostAmountDollarOrder mostAmountDollarOrder = new MostAmountDollarOrder();
 
-    private StateMostOrder stateMostOrder = new StateMostOrder();
+    StateMostOrder stateMostOrder = new StateMostOrder();
 
-    private BestSellingProduct bestSellingProductOption = new BestSellingProduct();
+    BestSellingProduct bestSellingProductOption = new BestSellingProduct();
 
     public void addOrder(Order order) {
         OrderAmount amount = OrderAmount.getAmmount(order);
