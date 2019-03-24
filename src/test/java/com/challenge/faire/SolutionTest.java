@@ -27,7 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 public class SolutionTest {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().needClientAuth(false).httpsPort(9090));
+    public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(9090));
 
     @Autowired
     private Solution solution;
@@ -47,30 +47,30 @@ public class SolutionTest {
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBodyFile("mock/productsPage1")));
+                        .withBodyFile("mock/productsPage1.json")));
         stubFor(get(urlEqualTo("/products?page=2&brand_id=b_d2481b88"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBodyFile("mock/productsPage2")));
+                        .withBodyFile("mock/productsPage2.json")));
 
         stubFor(get(urlEqualTo("/orders?page=1"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBodyFile("mock/ordersPage1")));
+                        .withBodyFile("mock/ordersPage1.json")));
 
         stubFor(get(urlEqualTo("/orders?page=2"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBodyFile("mock/ordersPage2")));
+                        .withBodyFile("mock/ordersPage2.json")));
 
         stubFor(get(urlEqualTo("/orders?page=3"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBodyFile("mock/ordersPage3")));
+                        .withBodyFile("mock/ordersPage3.json")));
 
         stubFor(patch(urlEqualTo("/products/options/inventory-levels"))
                 .withHeader("Content-Type", equalTo("application/json"))

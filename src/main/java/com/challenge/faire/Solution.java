@@ -32,6 +32,11 @@ public class Solution {
     @Autowired
     private InventoryService inventoryService;
 
+
+    //DOUBTS
+    // I DIDNT UNDERSTAND VERY WELL WHAT IS SKU
+    // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
+    // IF THE MOST ANYTHING HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
     public void execute() {
 
         Map<String, Integer> skuQuantity = productService.getAllProductsByBrand(BRAND_ID).stream()
