@@ -39,7 +39,9 @@ public class Solution {
     // IF THE MOST ANYTHING HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
     public void execute() {
 
-        Map<String, Integer> skuQuantity = productService.getAllProductsByBrand(BRAND_ID).stream()
+        List<Product> products = productService.getAllProductsByBrand(BRAND_ID);
+
+        Map<String, Integer> skuQuantity = products.stream()
                 .filter(Product::getActive)
                 .flatMap(product -> product.getOptions().stream())
                 .filter(ProductOption::getActive)
@@ -68,7 +70,6 @@ public class Solution {
 
                     // there is inventory to fulfill the order so decrement inventory
                     if (quantityAvailable != 0 && quantityAvailable >= orderItem.getQuantity().intValue()) {
-                        //TODO dont forget to test this
                         skuQuantity.put(orderItem.getSku(), quantityAvailable - orderItem.getQuantity());
 
                     } else {

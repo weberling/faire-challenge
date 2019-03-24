@@ -717,7 +717,7 @@
       "description": "Tea Drops are organic pressed teas that dissolve in your cup. Comprised of USDA organic tea, spices, and lightly sweetened with raw sugar, Tea Drops can be enjoyed anytime, anywhere, just by adding hot water.\n\nEach Tea Drop is protected in a recyclable sealed bag, and your collective Tea Drops order will arrive carefully cushioned in a recyclable box. ",
       "wholesale_price_cents": 85,
       "retail_price_cents": 200,
-      "active": false,
+      "active": true,
       "name": "Individual Tea Drops",
       "unit_multiplier": 25,
       "options": [
@@ -728,7 +728,7 @@
           "active": true,
           "name": "Rose Early Grey",
           "sku": "IND0001",
-          "available_quantity": 10,
+          "available_quantity": 90,
           "product_id": "p_4kneqjyb"
         },
         {
@@ -852,7 +852,7 @@
       "description": "Fits 2 Tea Drops",
       "wholesale_price_cents": 170,
       "retail_price_cents": 800,
-      "active": false,
+      "active": true,
       "name": "Mini Unfilled Wood Box",
       "unit_multiplier": 1,
       "options": [
@@ -863,7 +863,7 @@
           "active": true,
           "name": "default",
           "sku": "WOODMINI000",
-          "available_quantity": 0,
+          "available_quantity": 20,
           "product_id": "p_ebah7hfq"
         }
       ]
