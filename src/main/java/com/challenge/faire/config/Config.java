@@ -21,7 +21,6 @@ public class Config {
         ObjectMapper objectMapper = builder.createXmlMapper(false)
                 .propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE).build();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         return objectMapper;
     }
 }

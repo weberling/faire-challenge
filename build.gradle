@@ -15,7 +15,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'maven'
+apply plugin: 'jacoco'
 
 group = 'com.challenge'
 version = '0.0.1-SNAPSHOT'
@@ -44,3 +44,25 @@ bootRun {
 		args project.args.split(',')
 	}
 }
+
+jacoco {
+	toolVersion = "0.8.0"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'com/challenge/faire/FaireChallengeApplication.class',
+					'com/challenge/faire/config/*'
+			])
+		})
+
+	}
+}
+
+check.dependsOn jacocoTestReport

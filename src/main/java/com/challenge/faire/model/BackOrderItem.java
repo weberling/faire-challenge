@@ -1,14 +1,14 @@
 package com.challenge.faire.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Created by weberling on 23/03/19.
  */
 @Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 public class BackOrderItem {
     private Integer availableQuantity;

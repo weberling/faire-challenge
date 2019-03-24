@@ -1,6 +1,6 @@
 package com.challenge.faire.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
@@ -8,6 +8,10 @@ import java.util.List;
  * Created by weberling on 23/03/19.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class ProductPage {
 
     private List<Product> products;

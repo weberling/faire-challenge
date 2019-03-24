@@ -1,7 +1,6 @@
 package com.challenge.faire.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
@@ -10,6 +9,9 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Order {
     private String id;
     private List<OrderItem> items;
