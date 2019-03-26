@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Created by weberling on 23/03/19.
  */
 
-// DOUBTS
+// TODO DOUBTS
 // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
 // IF THE MOST ANYTHING* HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
 // WHAT IS unit_multiplier
@@ -59,6 +59,7 @@ public class SolutionService {
 
         statistics.print();
         if(updateInventory.get()) {
+            // TODO Im not sure id I have to update inventory, how I know the most recent sku?
             inventoryService.update(getInventoryRequest(skuQuantity));
         }
 

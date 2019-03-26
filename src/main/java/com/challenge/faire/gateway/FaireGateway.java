@@ -31,7 +31,6 @@ public class FaireGateway {
     }
 
     public void updateInventory(InventoryRequest inventoryRequest) {
-        // TODO Im not sure id I have to update inventory, how I know the most recent sku?
         faireProxy.updateInventory(token, inventoryRequest);
     }
 
