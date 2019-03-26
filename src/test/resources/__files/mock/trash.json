@@ -1,0 +1,22 @@
+{
+  "best_selling_product_option": {
+    "key": "po_6kkvedwj",
+    "value": 2
+  },
+  "largest_order_by_dollar_ammount": {
+    "key": "bo_alanim4r",
+    "value": 25560
+  },
+  "state_most_order": {
+    "key": "Florida",
+    "value": 1
+  },
+  "best_selling_sku": {
+    "key": "COMPF002",
+    "value": 2
+  },
+  "state_most_amount_order": {
+    "key": "South Carolina",
+    "value": 25560
+  }
+}

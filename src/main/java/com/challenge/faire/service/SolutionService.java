@@ -11,6 +11,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
  */
 
 // DOUBTS
-// SAME SKU FOR DIFFERENTS PRODUCTS?
 // AMOUNT DOLLAR IS QUANTITY MULTIPLE PRICE?
 // IF THE MOST ANYTHING* HAS 2 OR MORE ITEMS, WHAT SHOULD I PRINT?
 // WHAT IS unit_multiplier
@@ -45,15 +46,21 @@ public class SolutionService {
 
 
         Statistics statistics = new Statistics();
+        AtomicBoolean updateInventory = new AtomicBoolean(Boolean.FALSE);
 
 
         orders.stream().forEach(order -> {
             statistics.addOrder(order);
-            consumeOrder(skuQuantity, order);
+            boolean updated = consumeOrder(skuQuantity, order);
+            if(updated){
+                updateInventory.set(updated);
+            }
         });
 
         statistics.print();
-        inventoryService.update(getInventoryRequest(skuQuantity));
+        if(updateInventory.get()) {
+            inventoryService.update(getInventoryRequest(skuQuantity));
+        }
 
     }
 
@@ -65,9 +72,10 @@ public class SolutionService {
 
         List<Order> orders = orderService.getAllOrders();
 
-        orders.stream().forEach(order -> consumeOrder(skuQuantity, order));
+        orders.stream().map(order -> consumeOrder(skuQuantity, order)).filter(Boolean::booleanValue).findFirst().ifPresent(update -> {
+                inventoryService.update(getInventoryRequest(skuQuantity));
+        });
 
-        inventoryService.update(getInventoryRequest(skuQuantity));
 
     }
 
@@ -84,17 +92,18 @@ public class SolutionService {
 
     }
 
-    private void consumeOrder(Map<String, Integer> skuQuantity, Order order) {
+    private boolean consumeOrder(Map<String, Integer> skuQuantity, Order order) {
         if ("NEW".equals(order.getState())) {
             Map<String, BackOrderItem> backOrderItems = new HashMap<>();
 
             order.getItems().stream().forEach(orderItem -> {
 
-                int quantityAvailable = getProductQuantity(orderItem.getSku(), skuQuantity);
+                String key = getProductKey(orderItem);
+                int quantityAvailable = getProductQuantity(key, skuQuantity);
 
                 // there is inventory to fulfill the order so decrement inventory
                 if (quantityAvailable != 0 && quantityAvailable >= orderItem.getQuantity().intValue()) {
-                    skuQuantity.put(orderItem.getSku(), quantityAvailable - orderItem.getQuantity());
+                    skuQuantity.put(key, quantityAvailable - orderItem.getQuantity());
 
                     // item has no enough inventory
                 } else {
@@ -105,14 +114,17 @@ public class SolutionService {
             // accept order
             if (CollectionUtils.isEmpty(backOrderItems.entrySet())) {
                 orderService.acceptOrder(order.getId());
+                return true;
 
             } else {
                 // there is item without fulfill
                 orderService.backOrderItem(order.getId(), backOrderItems);
+                return false;
             }
 
 
         }
+        return false;
     }
 
     private Map<String, Integer> mapActiveProductOptionsAvailableBySku(List<Product> products) {
@@ -121,9 +133,20 @@ public class SolutionService {
                 .flatMap(product -> product.getOptions().stream())
                 .filter(ProductOption::getActive)
                 .filter(productOption -> productOption.getAvailableQuantity() != null)
-                .filter(productOption -> productOption.getAvailableQuantity() >= 0)
-                .filter(productOption -> StringUtils.isNotBlank(productOption.getSku()))
-                .collect(Collectors.toMap(productOption -> productOption.getSku(), productOption -> productOption.getAvailableQuantity()));
+                .collect(Collectors.toMap(this::getProductKey, productOption -> productOption.getAvailableQuantity()));
+
+    }
+
+    private String getProductKey(OrderItem orderItem){
+        return getProductKey(orderItem.getProductId(), orderItem.getProductOptionId(), orderItem.getSku());
+    }
+
+    private String getProductKey(ProductOption productOption){
+        return getProductKey(productOption.getProductId(), productOption.getId(), productOption.getSku());
+    }
+
+    private String getProductKey(String productId, String productOptionId, String sku){
+        return String.format("%s_%s", productId, productOptionId);
     }
 
     private InventoryRequest getInventoryRequest(Map<String, Integer> quantityBySku) {
@@ -132,8 +155,8 @@ public class SolutionService {
                 .collect(Collectors.toList()));
     }
 
-    private Integer getProductQuantity(String sku, Map<String, Integer> skuQuantity) {
-        Integer availableQuantity = skuQuantity.get(sku);
+    private Integer getProductQuantity(String key, Map<String, Integer> skuQuantity) {
+        Integer availableQuantity = skuQuantity.get(key);
         return availableQuantity != null ? availableQuantity : 0;
     }
 

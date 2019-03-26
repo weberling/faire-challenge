@@ -15,4 +15,5 @@ public class ProductOption {
     private String sku;
     private Boolean active;
     private Integer availableQuantity;
+    private String productId;
 }

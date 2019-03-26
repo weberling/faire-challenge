@@ -177,6 +177,7 @@
           "active": true,
           "name": "Citrus Ginger",
           "sku": "COMPF002",
+          "available_quantity": 20,
           "product_id": "p_55pt0wp8"
         },
         {
