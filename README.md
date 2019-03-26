@@ -8,12 +8,11 @@ gradle bootRun -Pargs=--faire_token={token}
 # endpoints
 
 ## consume all orders
-/orders/consume
-
+POST /orders/consume
 
 ## return statistics of all orders
-/orders/statistics
+GET /orders/statistics
 
-## print statistics of all orders and consume order
-/orders/consume-statistics
+## print statistics of all orders and consume orders
+POST /orders/consume-statistics
 
