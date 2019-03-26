@@ -6,7 +6,6 @@ import com.challenge.faire.model.OrderItem;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.Or;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
@@ -35,22 +34,22 @@ public class StatisticsTest {
         statistics.addOrder(createOrder(orderId++, state1, sku2, productOption3));
         statistics.addOrder(createOrder(orderId++, state2, sku2, productOption1, 5));
 
-        Assert.assertEquals(statistics.bestSellingProductOption.getProductOptionIdMost(), productOption1);
-        Assert.assertEquals(statistics.bestSellingProductOption.getProductOptionIdMostQuantity(), new Integer(3));
+        Assert.assertEquals(statistics.bestSellingProductOption.getProductOptionIdMost().getKey(), productOption1);
+        Assert.assertEquals(statistics.bestSellingProductOption.getProductOptionIdMost().getValue(), new Integer(3));
 
 
-        Assert.assertEquals(statistics.bestSellingProductOption.getSkuMost(), sku2);
-        Assert.assertEquals(statistics.bestSellingProductOption.getSkuMostQuantity(), new Integer(4));
+        Assert.assertEquals(statistics.bestSellingProductOption.getSkuMost().getKey(), sku2);
+        Assert.assertEquals(statistics.bestSellingProductOption.getSkuMost().getValue(), new Integer(4));
 
-        Assert.assertEquals(statistics.mostAmountDollarOrder.getMostOrderAmmountDolllar(), "6");
-        Assert.assertEquals(statistics.mostAmountDollarOrder.getMostAmmountDolllar(), new Integer(25));
+        Assert.assertEquals(statistics.mostAmountDollarOrder.getMostOrderAmmountDolllar().getKey(), "6");
+        Assert.assertEquals(statistics.mostAmountDollarOrder.getMostOrderAmmountDolllar().getValue(), new Integer(25));
 
 
-        Assert.assertEquals(statistics.stateMostOrder.getStateMostOrder(), state1);
-        Assert.assertEquals(statistics.stateMostOrder.getStateMostOrderQuantity(), new Integer(4));
+        Assert.assertEquals(statistics.stateMost.getStateMostOrder().getKey(), state1);
+        Assert.assertEquals(statistics.stateMost.getStateMostOrder().getValue(), new Integer(4));
 
-        Assert.assertEquals(statistics.stateMostOrder.getStateMostDollar(), state2);
-        Assert.assertEquals(statistics.stateMostOrder.getStateMostDollarAmount(), new Integer(26));
+        Assert.assertEquals(statistics.stateMost.getStateMostDollar().getKey(), state2);
+        Assert.assertEquals(statistics.stateMost.getStateMostDollar().getValue(), new Integer(26));
     }
 
 

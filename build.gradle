@@ -31,7 +31,8 @@ dependencies {
 	compile "io.github.openfeign:feign-jackson:9.0.0"
 	compile 'org.springframework.retry:spring-retry'
 	compile 'org.springframework.boot:spring-boot-starter'
-	compile 'org.springframework:spring-web'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'commons-io:commons-io:2.5'
 
 	compile 'org.apache.commons:commons-lang3:3.4'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.6'

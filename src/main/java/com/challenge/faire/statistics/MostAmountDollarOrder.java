@@ -9,15 +9,13 @@ import lombok.Getter;
 public class MostAmountDollarOrder {
 
     @Getter
-    private String mostOrderAmmountDolllar;
-    @Getter
-    private Integer mostAmmountDolllar = 0;
+    private EntityStatistics mostOrderAmmountDolllar = new EntityStatistics();
 
 
     public void addOrder(Order order, OrderAmount amount) {
-        if (amount.getPrice() > mostAmmountDolllar) {
-            mostAmmountDolllar = amount.getPrice();
-            mostOrderAmmountDolllar = order.getId();
+        if (amount.getPrice() > mostOrderAmmountDolllar.getValue()) {
+            mostOrderAmmountDolllar.setValue(amount.getPrice());
+            mostOrderAmmountDolllar.setKey(order.getId());
         }
     }
 }

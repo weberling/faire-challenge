@@ -15,14 +15,10 @@ public class BestSellingProduct {
     private Map<String, Integer> skusQuantity = new HashMap<>();
 
     @Getter
-    private String productOptionIdMost;
-    @Getter
-    private Integer productOptionIdMostQuantity = 0;
+    private EntityStatistics productOptionIdMost = new EntityStatistics();
 
     @Getter
-    private String skuMost;
-    @Getter
-    private Integer skuMostQuantity = 0;
+    private EntityStatistics skuMost = new EntityStatistics();
 
 
     public void addOrder(Order order) {
@@ -45,9 +41,9 @@ public class BestSellingProduct {
             productOptionsQuantity.put(productOptionId, ++productOptionQuantity);
         }
 
-        if (productOptionQuantity > productOptionIdMostQuantity) {
-            productOptionIdMostQuantity = productOptionQuantity;
-            productOptionIdMost = productOptionId;
+        if (productOptionQuantity > productOptionIdMost.getValue()) {
+            productOptionIdMost.setValue(productOptionQuantity);
+            productOptionIdMost.setKey(productOptionId);
         }
     }
 
@@ -62,9 +58,9 @@ public class BestSellingProduct {
             skusQuantity.put(sku, ++skuQuantity);
         }
 
-        if (skuQuantity > skuMostQuantity) {
-            skuMostQuantity = skuQuantity;
-            skuMost = sku;
+        if (skuQuantity > skuMost.getValue()) {
+            skuMost.setValue(skuQuantity);
+            skuMost.setKey(sku);
         }
     }
 }

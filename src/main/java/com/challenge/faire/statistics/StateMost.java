@@ -9,19 +9,15 @@ import java.util.Map;
 /**
  * Created by weberling on 23/03/19.
  */
-public class StateMostOrder {
+public class StateMost {
     private Map<String, Integer> stateOrdersQuantity = new HashMap<>();
     private Map<String, Integer> stateMostDollarAmountMap = new HashMap<>();
 
     @Getter
-    private String stateMostOrder;
-    @Getter
-    private Integer stateMostOrderQuantity = 0;
+    private EntityStatistics stateMostOrder = new EntityStatistics();
 
     @Getter
-    private String stateMostDollar;
-    @Getter
-    private Integer stateMostDollarAmount = 0;
+    private EntityStatistics stateMostDollar = new EntityStatistics();
 
 
     public void addOrder(Order order, OrderAmount amount) {
@@ -41,9 +37,9 @@ public class StateMostOrder {
             stateMostDollarAmountMap.put(state, stateAmount);
         }
 
-        if (stateAmount > stateMostDollarAmount) {
-            stateMostDollarAmount = stateAmount;
-            stateMostDollar = state;
+        if (stateAmount > stateMostDollar.getValue()) {
+            stateMostDollar.setValue(stateAmount);
+            stateMostDollar.setKey(state);
         }
     }
 
@@ -58,9 +54,9 @@ public class StateMostOrder {
             stateOrdersQuantity.put(state, ++stateQuantity);
         }
 
-        if (stateQuantity > stateMostOrderQuantity) {
-            stateMostOrderQuantity = stateQuantity;
-            stateMostOrder = state;
+        if (stateQuantity > stateMostOrder.getValue()) {
+            stateMostOrder.setValue(stateQuantity);
+            stateMostOrder.setKey(state);
         }
     }
 }
