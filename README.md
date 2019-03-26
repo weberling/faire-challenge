@@ -1,5 +1,7 @@
 # faire-challenge
 faire-challenge for vanhack
+I had some doubts in this challenge.
+Then I put some TODOs for the doubts
 
 # run
 ```
